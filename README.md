@@ -258,8 +258,8 @@ nvidia@nvidia-tegra: ~$ source ~/.bashrc
 5. On the Jetson run `roslaunch turtlebot3_slam turtlebot3_rsld_slam.launch`
 6. Assuming two robots are named **louie** and **dewey**, on the remote-computer run `roslaunch turtlebot3_slam multi_rsld_rviz.launch louie:=1 dewey:=1'
 
-### <a name="packages"></a> ROS Packages Used:
-* [depthimage to laserscan](http://wiki.ros.org/depthimage_to_laserscan)
+### <a name="packages"></a> ROS Packages Utilized
+* [depthimage_to_laserscan](http://wiki.ros.org/depthimage_to_laserscan)
 * [frontier_exploration](http://wiki.ros.org/frontier_exploration)
 * [geometry2](http://wiki.ros.org/geometry2)
 * [hls_lfcd_lds_driver](http://wiki.ros.org/hls_lfcd_lds_driver)
@@ -277,5 +277,5 @@ nvidia@nvidia-tegra: ~$ source ~/.bashrc
 * [tf](http://wiki.ros.org/tf)
 * [turtlebot3](http://wiki.ros.org/turtlebot3)
 * [turtlebot3_msgs](http://wiki.ros.org/turtlebot3_msgs)
-* [turtlebot3 simulations](http://wiki.ros.org/turtlebot3_simulations)
-* [Vision OpenCV](http://wiki.ros.org/vision_opencv)
+* [turtlebot3_simulations](http://wiki.ros.org/turtlebot3_simulations)
+* [vision_opencv](http://wiki.ros.org/vision_opencv)
