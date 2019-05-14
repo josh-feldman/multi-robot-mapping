@@ -5,7 +5,7 @@ This writeup includes instructions for integrating an NVIDIA Jetson TX2 and Inte
 1. [Verify the Jetson](#jetson)
 2. [Prepare JetPack](#jetpack)
 3. [Flashing the Jetson](#orbitty)
-4. [Setting up Git and ROS](#ROS)
+4. [Setting up Git and ROS](#ros)
 5. [Catkin Workspace](#catkin)
 6. [Configuring the Kernel](#kernel)
 7. [Integrating the RealSense](#r200)
@@ -82,15 +82,15 @@ user@hostname: ~/Jetpack_3.3/64_TX2/Linux_for_Tegra$ sudo ./flash.sh orbitty
 sudo apt update
 sudo apt install git
 ```
-        1. If the git installation has an issue, run the following and then retry step one above:
-        ```console
-         sudo apt-get purge runit
-         sudo apt-get purge git-all
-         sudo apt-get purge git
-         sudo apt-get autoremove
-         sudo apt update
-         ```
-1. Perform the following [ROS installation](http://wiki.ros.org/kinetic/Installation/Ubuntu) on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
+2. If the git installation has an issue, run the following and then retry step one above:
+```console
+ sudo apt-get purge runit
+ sudo apt-get purge git-all
+ sudo apt-get purge git
+ sudo apt-get autoremove
+ sudo apt update
+ ```
+3. Perform the following [ROS installation](http://wiki.ros.org/kinetic/Installation/Ubuntu) on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
 ```console
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
@@ -102,7 +102,7 @@ echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
 ```
-2. Install the following ROS Dependencies on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
+4. Install the following ROS Dependencies on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
 ```console
 sudo apt update
 sudo apt-get install ros-kinetic-frontier-exploration ros-kinetic-navigation-stage
