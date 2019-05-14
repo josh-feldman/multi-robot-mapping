@@ -1,12 +1,24 @@
 # Multi Turtlebot3 Exploration in 2D and 3D using NVIDIA Jetson TX2
 This writeup includes instructions for integrating an NVIDIA Jetson TX2 and Intel RealSense R200 with a Turtlebot3 Burger. In addition, it includes the requirements for running multiple Turtlebot3 Burgers under a single ROS Master. Finally, it describes how to utilize this repository to perform collaborative multi-robot mapping in 2D and 3D. The Turtlebot3 hardware is all open source, as are the ROS packages used and modified to create this repository. Links to the original packages can be found at the [bottom of this writeup](#packages). This writeup assumes you have access to a computer running Ubuntu 16.04.
 
-## Verify NVIDIA Jetson TX2
+##Table of Contents
+1. [Verify the Jetson](#jetson)
+2. [Prepare JetPack](#jetpack)
+3. [Flashing the Jetson](#orbitty)
+4. [Setting up Git and ROS](#ROS)
+5. [Catkin Workspace](#catkin)
+6. [Configuring the Kernel](#kernel)
+7. [Integrating the RealSense](#r200)
+8. [Integrating the OpenCR Board](#opencr)
+9. [Setting up .bashrc](#bashrc)
+10. [ROS Packages Used](#packages)
+
+## <a name="jetson"></a>Verify NVIDIA Jetson TX2
 1. Plug in and turn on the Jetson while connected to the original development board to start Ubuntu and verify functionality.
 
 2. Remove the Jetson from the development board and secure it to the Orbitty Carrier Board. [This video](https://www.youtube.com/watch?v=9uMvXqhjxaQ) outlines exactly how to switch the boards and includes further details on flashing. For the rest of this setup, we continued to use the wifi antennae provided on the original development board while interfacing through the Orbitty Carrier Board. 
 
-## Prepare JetPack files for flashing
+## <a name="jetpack"></a>Prepare JetPack files for flashing
 The JetPack installer does not play nicely with the Orbitty Carrier Board. If using the Orbitty Carrier Board for a smaller embedded computer like we did, you must first run the JetPack installer to build all of the required files and then use the Connect Tech. installer to flash the Jetson TX2 with JetPack.
 
 1. On a separate Ubuntu 16.04 computer, head to NVIDIA's [JetPack Archive](https://developer.nvidia.com/embedded/jetpack-archive) and download JetPack 3.3***. You will need an NVIDIA developer account to complete the download, but it is free to sign up using a .edu email address.
@@ -42,7 +54,7 @@ user@hostname: ~/Jetpack_3.3$ ./JetPack-L4T-3.3-linux-x64_b39.run
     7. When prompted to flash the operating system to the TX2 select Cancel. We have now installed the required JetPack files onto our remote computer:
     <p align="center"><img src="images/tutorial_9.png" width="500"/></p>
   
-## Flashing the Jetson TX2 on the Orbitty Carrier Board
+## <a name="orbitty"></a>Flashing the Jetson TX2 on the Orbitty Carrier Board
 1. On the Ubuntu 16.04 computer used in the above steps, head to the Connect Tech. [Board Support Package](http://connecttech.com/support/resource-center/nvidia-jetson-tx2-tx1-product-support/) webpage and download the appropriate L4T version for the board and JetPack. As we are using the Jetson TX2 with JetPack 3.3, we downloaded L4T version 28.2x (highlighted in blue below):
 <p align="center"><img src="images/tutorial_10.png" width="500"/></p>
 
@@ -63,7 +75,7 @@ user@hostname: ~/Jetpack_3.3/64_TX2/Linux_for_Tegra$ sudo ./flash.sh orbitty
 
 5. Once the script has finished, the Jetson is ready to use. Simply restart, plug in peripherals, and move on to the next steps.
 
-## Install Git, ROS Kinetic, and ROS Package Dependencies
+## <a name="ros"></a>Install Git, ROS Kinetic, and ROS Package Dependencies
 1. Install Git via the following commands on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
 ```console
 sudo apt update
@@ -106,7 +118,7 @@ sudo apt-get install librealsense2-dev
 sudo apt-get install librealsense2-dbg
 ```
 
-## Workspace for catkin
+## <a name="catkin"></a>Workspace for catkin
 1. Create the catkin_ws via the following commands on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
 ```console
 mkdir -p ~/catkin_ws/src
@@ -115,7 +127,7 @@ catkin_make
 source devel/setup.bash
 ```
 
-## Configuring the kernel and installing additional drivers.
+## <a name="kernel"></a>Configuring the kernel and installing additional drivers.
 1. On the Nvidia Jetson TX2, clone or download JetsonHacks' [buildJetsonTX2 repository](https://github.com/jetsonhacks/buildJetsonTX2Kernel) into the home directory. Enter the directory and run the following in terminal:
 ```console
 nvidia@nvidia-tegra: ~/buildJetsonTx2Kernel-master$ sudo ./getKernelSources.sh
@@ -143,7 +155,7 @@ nvidia@nvidia-tegra: ~/buildJetsonTx2Kernel-master$ sudo ./copyImage.sh
 nvidia@nvidia-tegra: ~$ sudo apt-get update
 nvidia@nvidia-tegra: ~$ sudo apt-get install linux-firmware
 ```
-## Intel RealSense R200 Drivers and Setup
+## <a name="r200"></a>Intel RealSense R200 Drivers and Setup
 The [official JetsonHacks instructions](https://www.jetsonhacks.com/2017/03/26/intel-realsense-camera-installation-nvidia-jetson-tx2/) for installing the R200 camera drivers have been modified slightly, but this is a good reference if further assistance is required.
 
 1. On the Nvidia Jetson TX2, download JetsonHacks' [installLibrealsenseTX2 tar.gz](https://github.com/jetsonhacks/installLibrealsenseTX2/releases) into the home directory.
@@ -171,7 +183,7 @@ nvidia@nvidia-tegra: ~/installLibrealsenseTX2-vL4T27.1$ rviz -d rviz/realsense_r
 
 5. Check out [this video](https://www.youtube.com/watch?v=q_pC6HZr0Yg) if you are interested in upgrading the camera to, say, the Intel RealSense D435.
 
-## Integrate Jetson TX2 with OpenCR Board
+## <a name="opencr"></a>Integrate Jetson TX2 with OpenCR Board
 1. Run the following commands on the NVIDIA Jetson TX2 to install the 32-bit libraries that will allow the 64-bit Jetson to communicate with the OpenCR board:
 ```console
 nvidia@nvidia-tegra: ~$ sudo dpkg --add architecture armhf
@@ -221,7 +233,7 @@ exit
 nvidia@nvidia-tegra: ~/opencr_update$ ./update.sh $OPENCR_PORT $OPENCR_MODEL.opencr && cd ..
 ```
 
-## Configure the .bashrc files
+## <a name="bashrc"></a>Configure the .bashrc files
 1. On the Ubuntu 16.04 computer, run the following commands, replacing **COMPIP** with the computer's IP address:
 ```console
 user@hostname: ~$ echo "export ROS_MASTER_URI=http://COMPIP:11311" >> ~/.bashrc
@@ -238,24 +250,23 @@ nvidia@nvidia-tegra: ~$ source ~/.bashrc
 ```
 
 ### <a name="packages"></a> ROS Packages Used:
-* [Turtlebot3](http://wiki.ros.org/turtlebot3)
-* [Turtlebot3 Messages](http://wiki.ros.org/turtlebot3_msgs)
-* [Turtlebot3 Simulations](http://wiki.ros.org/turtlebot3_simulations)
-* [Depth Image to Laserscan](http://wiki.ros.org/depthimage_to_laserscan)
-* [Frontier Exploration](http://wiki.ros.org/frontier_exploration)
-* [Geometry2](http://wiki.ros.org/geometry2)
-* [Multi-Robot Map Merge](http://wiki.ros.org/multirobot_map_merge)
-* [Navigation](http://wiki.ros.org/navigation)
-* [Navigation Messages](https://github.com/ros-planning/navigation_msgs)
-* [Octomap Mapping](http://wiki.ros.org/octomap_mapping)
-* [Octomap Messages](http://wiki.ros.org/octomap_msgs)
-* [Octomap ROS](http://wiki.ros.org/octomap_ros)
-* [Octomap RVIZ Plugins](http://wiki.ros.org/octomap_rviz_plugins)
-* [Realsense](http://wiki.ros.org/RealSense)
-* [Realsense Gazebo Plugin](https://github.com/SyrianSpock/realsense_gazebo_plugin)
-* [ROSSerial](http://wiki.ros.org/rosserial)
-* [Slam GMapping](http://wiki.ros.org/gmapping)
-* [TF Publisher](http://wiki.ros.org/tf)
-* [Vision OpenCV](http://wiki.ros.org/vision_opencv)
+* [depthimage to laserscan](http://wiki.ros.org/depthimage_to_laserscan)
+* [frontier_exploration](http://wiki.ros.org/frontier_exploration)
+* [geometry2](http://wiki.ros.org/geometry2)
 * [hls_lfcd_lds_driver](http://wiki.ros.org/hls_lfcd_lds_driver)
-
+* [multirobot_map_merge](http://wiki.ros.org/multirobot_map_merge)
+* [Navigation Stack](http://wiki.ros.org/navigation)
+* [navigation_msgs](https://github.com/ros-planning/navigation_msgs)
+* [cctomap_mapping](http://wiki.ros.org/octomap_mapping)
+* [octomap_msgs](http://wiki.ros.org/octomap_msgs)
+* [octomap_ros](http://wiki.ros.org/octomap_ros)
+* [octomap_rviz_plugins](http://wiki.ros.org/octomap_rviz_plugins)
+* [RealSense](http://wiki.ros.org/RealSense)
+* [realsense_gazebo_plugin](https://github.com/SyrianSpock/realsense_gazebo_plugin)
+* [rosserial](http://wiki.ros.org/rosserial)
+* [slam_gmapping](http://wiki.ros.org/gmapping)
+* [tf](http://wiki.ros.org/tf)
+* [turtlebot3](http://wiki.ros.org/turtlebot3)
+* [turtlebot3_msgs](http://wiki.ros.org/turtlebot3_msgs)
+* [turtlebot3 simulations](http://wiki.ros.org/turtlebot3_simulations)
+* [Vision OpenCV](http://wiki.ros.org/vision_opencv)
