@@ -61,7 +61,59 @@ user@hostname: ~/Jetpack_3.3/64_TX2/Linux_for_Tegra$ sudo ./install.sh
 user@hostname: ~/Jetpack_3.3/64_TX2/Linux_for_Tegra$ sudo ./flash.sh orbitty
 ```
 
-5. Once the script has finished, the Jetson is ready to use. Simply restart, plug in peripherals, and move on to the next steps to set up the kernel and additional drivers.
+5. Once the script has finished, the Jetson is ready to use. Simply restart, plug in peripherals, and move on to the next steps.
+
+## Install Git, ROS Kinetic, and ROS Package Dependencies
+1. Install Git via the following commands on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
+```console
+sudo apt update
+sudo apt install git
+```
+        1. If the git installation has an issue, run the following and then retry step one above:
+        ```console
+         sudo apt-get purge runit
+         sudo apt-get purge git-all
+         sudo apt-get purge git
+         sudo apt-get autoremove
+         sudo apt update
+         ```
+1. Perform the following [ROS installation](http://wiki.ros.org/kinetic/Installation/Ubuntu) on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
+```console
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+sudo apt-get update
+sudo apt-get install ros-kinetic-desktop-full
+sudo rosdep init
+rosdep update
+echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
+```
+2. Install the following ROS Dependencies on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
+```console
+sudo apt update
+sudo apt-get install ros-kinetic-frontier-exploration ros-kinetic-navigation-stage
+sudo apt-get install ros-kinetic-navigation
+sudo apt-get install ros-kinetic-slam-gmapping
+sudo apt-get install ros-kinetic-octomap ros-kinetic-octomap-mapping
+sudo apt install ros-kinetic-multirobot-map-merge ros-kinetic-explore-lite
+rosdep install octomap_mapping
+sudo apt-key adv --keyserver keys.gnupg.net --recv-key C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C8B3A55A6F3EFCDE
+sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo xenial main" -u
+sudo apt-get install librealsense2-dkms
+sudo apt-get install librealsense2-utils
+sudo apt-get install librealsense2-dev
+sudo apt-get install librealsense2-dbg
+```
+
+## Workspace for catkin
+1. Create the catkin_ws via the following commands on BOTH the Ubuntu 16.04 computer and NVIDIA Jetson TX2:
+```console
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/
+catkin_make
+source devel/setup.bash
+```
 
 ## Configuring the kernel and installing additional drivers.
 1. On the Nvidia Jetson TX2, clone or download JetsonHacks' [buildJetsonTX2 repository](https://github.com/jetsonhacks/buildJetsonTX2Kernel) into the home directory. Enter the directory and run the following in terminal:
@@ -104,4 +156,106 @@ nvidia@nvidia-tegra: ~/installLibrealsenseTX2-vL4T27.1$ sudo ./installLibrealsen
 nvidia@nvidia-tegra: ~/installLibrealsenseTX2-vL4T27.1$ sudo ./buildPatchedKernel.sh
 nvidia@nvidia-tegra: ~/installLibrealsenseTX2-vL4T27.1$ sudo ./setupTX1.sh
 ```
-### <a name="packages"></a>
+
+3. Once the script is finished, plug the RealSense R200 camera into the Jetson TX2 and then reboot the Jetson with `sudo reboot -h now` to load the new kernel.
+
+4. Run the following commands to install the ROS libraries and test the R200 camera on the NVIDIA Jetson TX2:
+```console
+nvidia@nvidia-tegra: ~$ git clone https://github.com/jetsonhacks/installRealsenseROSTX2
+nvidia@nvidia-tegra: ~$ cd installRealsenseROSTX2
+nvidia@nvidia-tegra: ~/installRealsenseROSTX2$ sudo ./installRealsenseROSTX2.sh
+nvidia@nvidia-tegra: ~/installRealsenseROSTX2$ cd ~/catkin_ws/src
+nvidia@nvidia-tegra: ~/installLibrealsenseTX2-vL4T27.1$ roscd realsense_camera
+nvidia@nvidia-tegra: ~/installLibrealsenseTX2-vL4T27.1$ rviz -d rviz/realsense_rgbd_pointcloud.rviz
+```
+
+5. Check out [this video](https://www.youtube.com/watch?v=q_pC6HZr0Yg) if you are interested in upgrading the camera to, say, the Intel RealSense D435.
+
+## Integrate Jetson TX2 with OpenCR Board
+1. Run the following commands on the NVIDIA Jetson TX2 to install the 32-bit libraries that will allow the 64-bit Jetson to communicate with the OpenCR board:
+```console
+nvidia@nvidia-tegra: ~$ sudo dpkg --add architecture armhf
+nvidia@nvidia-tegra: ~$ sudo apt-get update
+nvidia@nvidia-tegra: ~$ sudo apt-get install libc6:armhf libstdc++6:armhf
+nvidia@nvidia-tegra: ~$ export OPENCR_PORT=/dev/ttyACM0
+nvidia@nvidia-tegra: ~$ export OPENCR_MODEL=burger
+nvidia@nvidia-tegra: ~$ rm -rf ./opencr_update.tar.bz2
+nvidia@nvidia-tegra: ~$ wget https://github.com/ROBOTIS-GIT/OpenCR-Binaries/raw/master/turtlebot3/ROS1/latest/opencr_update.tar.bz2 && tar -xvf opencr_update.tar.bz2
+nvidia@nvidia-tegra: ~$ cd ./opencr_update
+nvidia@nvidia-tegra: ~/opencr_update$ vim update.sh
+```
+
+2. In the file that opens, remove the entire first if statement and change shell_cmd to "./opencr_ld_shell_arm". The file should now look as follows:
+
+```bash  
+#! /bin/bash
+
+
+architecture=""
+case $(uname -m) in
+    i386)   architecture="386" ;;
+    i686)   architecture="386" ;;
+    x86_64) architecture="amd64" ;;
+    armv7l) architecture="arm" ;;
+    arm)    dpkg --print-architecture | grep -q "arm64" && architecture="arm64" || architecture="arm" ;;
+esac
+
+echo $(uname -m)
+echo $architecture
+
+shell_cmd="./opencr_ld_shell_arm"
+
+echo "OpenCR Update Start.."
+if (($#==2))
+then
+  $shell_cmd $1 115200 $2 1
+else
+  echo "wrong parameter "
+  echo "update.sh <port> fw_name"
+fi
+
+exit
+```
+3. `:wq` to save and exit vim. Then run the following to complete installation:
+```console
+nvidia@nvidia-tegra: ~/opencr_update$ ./update.sh $OPENCR_PORT $OPENCR_MODEL.opencr && cd ..
+```
+
+## Configure the .bashrc files
+1. On the Ubuntu 16.04 computer, run the following commands, replacing **COMPIP** with the computer's IP address:
+```console
+user@hostname: ~$ echo "export ROS_MASTER_URI=http://COMPIP:11311" >> ~/.bashrc
+user@hostname: ~$ echo "export ROS_HOSTNAME=COMPIP" >> ~/.bashrc
+user@hostname: ~$ source ~/.bashrc
+```
+
+2. On the NVIDIA Jetson TX2, run the following commands, replacing **COMPIP** with the Ubuntu 16.04 computer IP address, **TXIP** with the NVIDIA Jetson TX2's IP Address, and **NAME** with the robot's designated name. This will create the topic namespacing:
+```console
+nvidia@nvidia-tegra: ~$ echo "export ROS_MASTER_URI=http://COMPIP:11311" >> ~/.bashrc
+nvidia@nvidia-tegra: ~$ echo "export ROS_HOSTNAME=TXIP" >> ~/.bashrc
+nvidia@nvidia-tegra: ~$ echo "export ROS_NAMESPACE=NAME" >> ~/.bashrc
+nvidia@nvidia-tegra: ~$ source ~/.bashrc
+```
+
+### <a name="packages"></a> ROS Packages Used:
+* [Turtlebot3](http://wiki.ros.org/turtlebot3)
+* [Turtlebot3 Messages](http://wiki.ros.org/turtlebot3_msgs)
+* [Turtlebot3 Simulations](http://wiki.ros.org/turtlebot3_simulations)
+* [Depth Image to Laserscan](http://wiki.ros.org/depthimage_to_laserscan)
+* [Frontier Exploration](http://wiki.ros.org/frontier_exploration)
+* [Geometry2](http://wiki.ros.org/geometry2)
+* [Multi-Robot Map Merge](http://wiki.ros.org/multirobot_map_merge)
+* [Navigation](http://wiki.ros.org/navigation)
+* [Navigation Messages](https://github.com/ros-planning/navigation_msgs)
+* [Octomap Mapping](http://wiki.ros.org/octomap_mapping)
+* [Octomap Messages](http://wiki.ros.org/octomap_msgs)
+* [Octomap ROS](http://wiki.ros.org/octomap_ros)
+* [Octomap RVIZ Plugins](http://wiki.ros.org/octomap_rviz_plugins)
+* [Realsense](http://wiki.ros.org/RealSense)
+* [Realsense Gazebo Plugin](https://github.com/SyrianSpock/realsense_gazebo_plugin)
+* [ROSSerial](http://wiki.ros.org/rosserial)
+* [Slam GMapping](http://wiki.ros.org/gmapping)
+* [TF Publisher](http://wiki.ros.org/tf)
+* [Vision OpenCV](http://wiki.ros.org/vision_opencv)
+* [hls_lfcd_lds_driver](http://wiki.ros.org/hls_lfcd_lds_driver)
+
