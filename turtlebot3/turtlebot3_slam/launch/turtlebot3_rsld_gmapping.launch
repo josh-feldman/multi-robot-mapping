@@ -1,0 +1,105 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, burger_realsense, waffle, waffle_pi]"/>
+  <arg name="configuration_basename" default="turtlebot3_lds_2d.lua"/>
+  <arg name="set_base_frame" default="base_footprint"/>
+  <arg name="set_odom_frame" default="odom"/>
+  <arg name="set_map_frame"  default="map"/>
+  <arg name="resolution" default="0.1"/>
+
+  <!-- Gmapping -->
+  <node pkg="gmapping" type="slam_gmapping" name="turtlebot3_slam_gmapping" output="screen">
+    <!--Frame attached to mobile base-->
+      <param name="base_frame" value="$(arg set_base_frame)"/>
+
+    <!--Frame attached to odometry system-->
+      <param name="odom_frame" value="$(arg set_odom_frame)"/>
+
+    <!--Frame attached to map-->
+      <param name="map_frame"  value="$(arg set_map_frame)"/>
+
+    <!--How long (sec) between updates to map. decrease number to update map more often at expense of computational load-->
+      <param name="map_update_interval" value="1.0"/>
+
+    <!--Maximum usable range of lazer. Beam is cropped to this value-->
+      <param name="maxUrange" value="3.4"/>
+
+    <!-- Maxmium range of sensor-->
+      <param name="maxRange" value="3.5"/>
+
+    <!--Sigma used by greedy endpoint matching-->
+      <param name="sigma" value="0.05"/>
+
+    <!--kernel in which to look for correspondence-->
+      <param name="kernelSize" value="1"/>
+
+    <!--Optimization step in translation-->
+      <param name="lstep" value="0.05"/>
+
+    <!--Optimization step in rotation-->
+      <param name="astep" value="0.05"/>
+
+    <!--Number of iterations of the scanmatcher-->
+      <param name="iterations" value="5"/>
+
+    <!--Sigma of the beam; used for liklihood computation-->
+      <param name="lsigma" value="0.075"/>
+
+    <!--Gain to be used while evaulating likelihood for smoothing/resampling effects-->
+      <param name="ogain" value="3.0"/>
+
+    <!--number of beans to skip each scan. Take only every (n+1)th laser ray for matching-->
+      <param name="lskip" value="0"/>
+
+    <!--Minimum score for considering good scan matching.-->
+      <param name="minimumScore" value="100"/> <!-- tested 10000 for scan-->
+
+    <!--Odometry error in translation as a function of translation rho/rho-->
+      <param name="srr" value="0.0"/>
+
+    <!--Odometry error in translation as a function of rotation rho/theta-->
+      <param name="srt" value="0.05"/>
+
+    <!--Odometry error in rotation as a function of translation theta/rho-->
+      <param name="str" value="0.1"/>
+
+    <!--Odometry error in rotation as a function of rotation rho/rho-->
+      <param name="stt" value="0.1"/>
+
+    <!--Process a scan each time the robot translates this far-->
+      <param name="linearUpdate" value="2.0"/>
+
+    <!--Process a scan each time the robot rotates this much-->
+      <param name="angularUpdate" value="2.0"/>
+
+    <!--process a scan if the last scan processed is older than the update time (sec), less than zero turns off time-based updates-->
+      <param name="temporalUpdate" value="-1.0"/>
+
+    <!--Neff based resampling threshold-->
+      <param name="resampleThreshold" value="0.5"/>
+
+    <!--Number of particles in filter-->
+      <param name="particles" value="30"/>
+
+    <!--Initial map size (meters)-->
+      <param name="xmin" value="-5.0"/>
+      <param name="ymin" value="-5.0"/>
+      <param name="xmax" value="5.0"/>
+      <param name="ymax" value="5.0"/>
+
+    <!--Map resolution (occupancy grid block)-->
+      <param name="delta" value="$(arg resolution)"/>
+
+    <!--translational sampling range for likelihood-->
+      <param name="llsamplerange" value="0.01"/>
+
+    <!--translational sampling step for likelihood-->
+      <param name="llsamplestep" value="0.01"/>
+
+    <!--angular sampling range for likelihood-->
+      <param name="lasamplerange" value="0.005"/>
+
+    <!--angular sampling step for likelihood-->
+      <param name="lasamplestep" value="0.005"/>
+  </node>
+</launch>

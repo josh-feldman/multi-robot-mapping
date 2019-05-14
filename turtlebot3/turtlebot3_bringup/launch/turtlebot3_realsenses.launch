@@ -1,0 +1,11 @@
+<launch>
+<include file="$(find realsense_camera)/launch/r200_nodelet_multiple_cameras.launch">
+	<arg name="camera1" value="camera" />
+	<arg name="camera1_serial_no" value ="2401009417"/>
+	<arg name="camera1_usb_port_id" value="2-1-3"/>
+	<arg name="camera2" value="camerab" />
+	<arg name="camera2_serial_no" value ="2471008329"/>
+	<arg name="camera2_usb_port_id" value="2-1-2"/>
+</include>
+
+</launch>

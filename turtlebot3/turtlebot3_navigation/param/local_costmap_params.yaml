@@ -1,0 +1,14 @@
+local_costmap:
+  global_frame: louie/odom
+  robot_base_frame: louie/base_link #changed from /base_footprint
+
+  update_frequency: 5.0 #changed from 10 to stop getting warning
+  publish_frequency: 5.0 #changed from 10 to stop getting warning
+  transform_tolerance: 0.5  
+
+  static_map: false  
+  rolling_window: true
+  width: 3
+  height: 3
+  resolution: 0.1
+  

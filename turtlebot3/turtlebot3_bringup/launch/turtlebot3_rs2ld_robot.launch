@@ -1,0 +1,21 @@
+<launch>
+  <arg name="multi_robot_name" default="louie"/>
+  <arg name="set_lidar_frame_id" default="$(arg multi_robot_name)/base_scan"/>
+  <arg name="camera_serial_no" default=""/>
+  <arg name="camera_usb_port_id" default=""/>
+
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_core.launch">
+    <arg name="multi_robot_name" value="$(arg multi_robot_name)"/>
+  </include>
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_lidar.launch">
+    <arg name="set_frame_id" value="$(arg set_lidar_frame_id)"/>
+  </include>
+ 
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="frame_prefix" value="$(arg multi_robot_name)/"/>
+    <arg name="serial_no" value="$(arg camera_serial_no)"/>
+    <arg name="usb_port_id" value="$(arg camera_usb_port_id)"/>
+  </include>
+
+  <node pkg="turtlebot3_bringup" type="turtlebot3_diagnostics" name="turtlebot3_diagnostics" output="screen"/>
+</launch>

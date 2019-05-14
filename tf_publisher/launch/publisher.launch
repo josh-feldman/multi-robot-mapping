@@ -1,0 +1,3 @@
+<launch>
+	<node pkg="tf" type="static_transform_publisher" name="tf_publisher" args="100 0 100 0 0 1 base_footprint rs200_camera 100" />
+</launch>

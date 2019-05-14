@@ -1,0 +1,18 @@
+<launch>
+
+ <arg name="camera" default="camera"/>
+ <arg name="topic" default= "/rsscan"/>
+ <arg name="outputlink" default="rs200_camera"/>
+  
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
+    <remap from="camera_info" to="$(arg camera)/depth/camera_info" />
+    <remap from="image" to="$(arg camera)/depth/image_raw" />
+    <remap from="scan" to="$(arg topic)" />
+    <param name="scan_height" value="0.11"/>
+    <param name="output_frame_id" value="$(arg outputlink)"/> <!--"base_link"-->
+    <param name="scan_time" value="0.1"/> <!--0.0166 would be 1 scan per 1 depth image-->
+    <param name="range_min" value="0.5"/>
+    <param name="range_max" value="3.0"/>
+
+  </node>
+</launch>

@@ -1,0 +1,14 @@
+<launch>
+  <arg name="multi_robot_name" default=""/>
+
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_core.launch">
+    <arg name="multi_robot_name" value="$(arg multi_robot_name)"/>
+  </include>
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_realsenses.launch"/>
+
+  <node pkg="turtlebot3_bringup" type="turtlebot3_diagnostics" name="turtlebot3_diagnostics" output="screen"/>
+
+  <!--include file="$(find depthimage_to_laserscan)/launch/depthimage_to_laserscan.launch"/-->
+
+  <include file="$(find tf_publisher)/launch/publisher.launch"/>
+</launch>

@@ -1,0 +1,14 @@
+obstacle_range: 3.0
+raytrace_range: 3.5
+
+footprint: [[-0.105, -0.105], [-0.105, 0.105], [0.041, 0.105], [0.041, -0.105]]
+#robot_radius: 0.105
+
+inflation_radius: 1.0
+cost_scaling_factor: 3.0
+
+map_type: costmap
+observation_sources: scan point_cloud_sensor
+point_cloud_sensor: {sensor_frame: louie/rs200_camera, data_type: PointCloud2, topic: louie/camera/depth/points, marking: true, clearing: true}
+scan: {sensor_frame: louie/base_scan, data_type: LaserScan, topic: louie/scan, marking: true, clearing: true}
+

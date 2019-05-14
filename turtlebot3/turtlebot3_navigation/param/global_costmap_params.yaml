@@ -1,0 +1,10 @@
+global_costmap:
+  global_frame: /louie/map
+  robot_base_frame: /louie/base_link #changed from /base_footprint
+
+  update_frequency: 5.0
+  publish_frequency: 5.0
+  transform_tolerance: 0.5
+
+  static_map: true
+ 
