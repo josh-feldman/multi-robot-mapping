@@ -22,24 +22,24 @@ user@hostname: ~/Jetpack_3.3$ ./JetPack-L4T-3.3-linux-x64_b39.run
 3. You will now be greeted by the JetPack installer. Follow the next steps carefully:
 
   1. Click Next on the first screen:
-  ![Tutorial1](images/tutorial_1.png)
+  <img src="images/tutorial_3.png" width="500"/>
   
   2. Do not change the installation or download directories. Check "No, disable usage collection" and click next:
-  ![Tutorial2](images/tutorial_2.png)
+  <img src="images/tutorial_4.png" width="500"/>
   
   3. Select Jetson TX2 as the development environment:
-  ![Tutorial3](images/tutorial_3.png)
+  <img src="images/tutorial_5.png" width="500"/>
   
   4. Set the Action field to "no action" for Host-Ubuntu. Set the Action field to "mixed" for Target-Jetson TX2/TX2i and expand the package submenu. Set the Action field to "install" for Linux for Tegra Host Side Image Setup. Finally, set the Action field to "no action" for Install on Target. The components manager window should now look like the image below.
-  ![Tutorial4](images/tutorial_4.png)
+  <img src="images/tutorial_6.png" width="500"/>
   
   5. Ater reading the license agreements, select the accept all checkbox and click Accept. When prompted, input your user password.
-  ![Tutorial5](images/tutorial_5.png)
+  <img src="images/tutorial_7.png" width="500"/>
   
   6.Select okay and let all of the installations complete.
-  ![Tutorial6](images/tutorial_6.png)
+  <img src="images/tutorial_8.png" width="500"/>
   
   7. When prompted to flash the operating system to the TX2 select Cancel. We have now installed the required JetPack files onto our remote computer.
-  ![Tutorial7](images/tutorial_7.png)
+  <img src="images/tutorial_9.png" width="500"/>
   
 ### <a name="packages"></a>
