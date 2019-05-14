@@ -35,29 +35,29 @@ user@hostname: ~/Jetpack_3.3$ ./JetPack-L4T-3.3-linux-x64_b39.run
 3. You will now be greeted by the JetPack installer. Follow the next steps carefully:
 
     1. Click Next on the first screen:
-    <p align="center"><img src="https://github.com/jfeldman24/multi-robot-mapping/tree/remote-computer/images/tutorial_3.png" width="500"/></p>
+    <p align="center"><img src="images/tutorial_3.png" width="500"/></p>
   
     2. Do not change the installation or download directories. Check "No, disable usage collection" and click next:
-    <p align="center"><img src="https://github.com/jfeldman24/multi-robot-mapping/tree/remote-computer/images/tutorial_4.png" width="500"/>
+    <p align="center"><img src="images/tutorial_4.png" width="500"/>
   
     3. Select Jetson TX2 as the development environment:
-    <p align="center"><img src="https://github.com/jfeldman24/multi-robot-mapping/tree/remote-computer/images/tutorial_5.png" width="500"/></p>
+    <p align="center"><img src="images/tutorial_5.png" width="500"/></p>
   
     4. Set the Action field to "no action" for Host-Ubuntu. Set the Action field to "mixed" for Target-Jetson TX2/TX2i and expand the package submenu. Set the Action field to "install" for Linux for Tegra Host Side Image Setup. Finally, set the Action field to "no action" for Install on Target. The components manager window should now look like the image below:
-    <p align="center"><img src="https://github.com/jfeldman24/multi-robot-mapping/tree/remote-computer/images/tutorial_6.png" width="500"/></p>
+    <p align="center"><img src="images/tutorial_6.png" width="500"/></p>
   
     5. Ater reading the license agreements, select the accept all checkbox and click Accept. When prompted, input your user password:
-    <p align="center"><img src="https://github.com/jfeldman24/multi-robot-mapping/tree/remote-computer/images/tutorial_7.png" width="500"/></p>
+    <p align="center"><img src="images/tutorial_7.png" width="500"/></p>
   
     6. Select okay and let all of the installations complete:
-    <p align="center"><img src="https://github.com/jfeldman24/multi-robot-mapping/tree/remote-computer/images/tutorial_8.png" width="500"/></p>
+    <p align="center"><img src="images/tutorial_8.png" width="500"/></p>
   
     7. When prompted to flash the operating system to the TX2 select Cancel. We have now installed the required JetPack files onto our remote computer:
-    <p align="center"><img src="https://github.com/jfeldman24/multi-robot-mapping/tree/remote-computer/images/tutorial_9.png" width="500"/></p>
+    <p align="center"><img src="images/tutorial_9.png" width="500"/></p>
   
 ## <a name="orbitty"></a>Flashing the Jetson TX2 on the Orbitty Carrier Board
 1. On the Ubuntu 16.04 computer used in the above steps, head to the Connect Tech. [Board Support Package](http://connecttech.com/support/resource-center/nvidia-jetson-tx2-tx1-product-support/) webpage and download the appropriate L4T version for the board and JetPack. As we are using the Jetson TX2 with JetPack 3.3, we downloaded L4T version 28.2x (highlighted in blue below):
-<p align="center"><img src="https://github.com/jfeldman24/multi-robot-mapping/tree/remote-computer/images/tutorial_10.png" width="500"/></p>
+<p align="center"><img src="images/tutorial_10.png" width="500"/></p>
 
 2. Assuming the .tgz file was downloaded to the Downloads folder, run the following commands to unzip and run the L4T installer, replacing **"CTI-L4T-V121.tgz"** with the name of the L4T .tgz file installed and replacing the Jetpack_X.Y directory with the correct name if necessary:
 ```console
