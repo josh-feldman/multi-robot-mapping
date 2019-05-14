@@ -11,7 +11,8 @@ This writeup includes instructions for integrating an NVIDIA Jetson TX2 and Inte
 7. [Integrating the RealSense](#r200)
 8. [Integrating the OpenCR Board](#opencr)
 9. [Setting up .bashrc](#bashrc)
-10. [ROS Packages Used](#packages)
+10. [Running the System](#run)
+11. [ROS Packages Used](#packages)
 
 ## <a name="jetson"></a>Verify NVIDIA Jetson TX2
 1. Plug in and turn on the Jetson while connected to the original development board to start Ubuntu and verify functionality.
@@ -248,6 +249,14 @@ nvidia@nvidia-tegra: ~$ echo "export ROS_HOSTNAME=TXIP" >> ~/.bashrc
 nvidia@nvidia-tegra: ~$ echo "export ROS_NAMESPACE=NAME" >> ~/.bashrc
 nvidia@nvidia-tegra: ~$ source ~/.bashrc
 ```
+
+## <a name="run"></a>Running the System
+1. On the Ubuntu 16.04 computer, clone the **remote-computer** branch of this repository, rename the folder "src", and replace the "src" folder in ~/catkin_ws. Then run `catkin_make`.
+2. On the NVIDIA Jetson TX2, clone the **robot** branch of this repository, rename the folder "src", and replace the "src" folder in ~/catkin_ws. Then run `catkin_make`.
+3. On the remote-computer run `roscore`
+4. On the Jetson run `roslaunch turtlebot3_bringup turtlebot3_rsld_robot.launch`
+5. On the Jetson run `roslaunch turtlebot3_slam turtlebot3_rsld_slam.launch`
+6. Assuming two robots are named **louie** and **dewey**, on the remote-computer run `roslaunch turtlebot3_slam multi_rsld_rviz.launch louie:=1 dewey:=1'
 
 ### <a name="packages"></a> ROS Packages Used:
 * [depthimage to laserscan](http://wiki.ros.org/depthimage_to_laserscan)
