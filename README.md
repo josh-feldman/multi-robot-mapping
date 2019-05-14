@@ -1,5 +1,7 @@
 # Multi Turtlebot3 Exploration in 2D and 3D using NVIDIA Jetson TX2
 This writeup includes instructions for integrating an NVIDIA Jetson TX2 and Intel RealSense R200 with a Turtlebot3 Burger. In addition, it includes the requirements for running multiple Turtlebot3 Burgers under a single ROS Master. Finally, it describes how to utilize this repository to perform collaborative multi-robot mapping in 2D and 3D. The Turtlebot3 hardware is all open source, as are the ROS packages used and modified to create this repository. Links to the original packages can be found at the [bottom of this writeup](#packages). This writeup assumes you have access to a computer running Ubuntu 16.04.
+<p align="center"><img src="images/turtlebots.png" width="305.5"/><img src="images/mapping.png" width="400"/></p>
+
 
 ## Table of Contents
 1. [Verify the Jetson](#jetson)
