@@ -1,0 +1,69 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="model" default="rsld"/>
+  
+  <!--Used to designate which robots are in the system. Should be replaced by taking in array of names and using a FOR loop to generate the turtlebot3_remote.launch for each-->
+  <arg name="louie" default="0"/>
+  <arg name="dewey" default="0"/>
+  <arg name="huey" default="0"/>
+  
+  
+  <!-- Example of initial positions for robots -->
+  <group ns="louie/map_merge">
+    <param name="init_pose_x" value="0"/>
+    <param name="init_pose_y" value="0"/>
+    <param name="init_pose_z" value="0"/>
+    <param name="init_pose_yaw" value="0"/>
+  </group>
+  <group ns="dewey/map_merge">
+    <param name="init_pose_x" value="0"/>
+    <param name="init_pose_y" value="-100"/>
+    <param name="init_pose_z" value="0"/>
+    <param name="init_pose_yaw" value="0"/>
+  </group> 
+  
+  <!--Used to display two maps at once for testing-->
+  <node pkg="tf" ns="louie" type="static_transform_publisher" name="world_broadcaster1" args="0 0 0 0 0 0 1 world louie/map 10" />
+  <node pkg="tf" ns="dewey" type="static_transform_publisher" name="world_broadcaster2" args="0 0 0 20 0 0 1 louie/map dewey/map 1" />
+ 
+  
+  <node pkg="multirobot_map_merge" type="map_merge" respawn="true" name="map_merge" output="screen">
+    <!--Swap if you would like to merge the explore costmaps instead of the gmapping maps-->
+    <param name="robot_map_topic" value="map"/> <!--"explore_server/explore_costmap/cost"-->
+    
+    <param name="robot_namespace" value=""/>
+    <param name="merged_map_topic" value="map"/>
+    <param name="world_frame" value="world"/>
+    <param name="known_init_poses" value="true"/>
+    <param name="merging_rate" value="1"/>
+    <param name="discovery_rate" value="0.05"/>
+    <param name="estimation_rate" value="0.5"/>
+    <param name="estimation_confidence" value="1"/>
+  </node>
+
+
+<!--Should be replaced with FOR loop running for each robot name given to the system-->
+<group ns="louie" if="$(eval arg('louie') > 0)">
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch"> 
+    <arg name="model" value="$(arg model)_louie" />
+    <arg name="multi_robot_name" value="louie"/>
+  </include>
+</group>
+<group ns="dewey" if="$(eval arg('dewey') > 0)">
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
+    <arg name="model" value="$(arg model)_dewey" />
+    <arg name="multi_robot_name" value="dewey"/>
+  </include>
+</group>
+<group ns="huey" if="$(eval arg('huey') > 0)">
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
+    <arg name="model" value="$(arg model)_huey" />
+    <arg name="multi_robot_name" value="huey"/>
+  </include>
+</group>
+
+ 
+  <!-- rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find turtlebot3_slam)/rviz/multi_rsld.rviz"/>
+</launch>

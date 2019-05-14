@@ -1,0 +1,14 @@
+<launch>
+  
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
+    <remap from="camera_info" to="/realsense/camera/depth/camera_info" />
+    <remap from="image" to="/realsense/camera/depth/image_raw" />
+    <remap from="scan" to="/scan" />
+    <param name="scan_height" value="0.11"/>
+    <param name="output_frame_id" value="base_link"/>
+    <param name="scan_time" value="0.1"/> <!--0.0166 would be 1 scan per 1 depth image-->
+    <param name="range_min" value="0.3"/>
+    <param name="range_max" value="10"/>
+
+  </node>
+</launch>
