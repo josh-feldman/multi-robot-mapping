@@ -257,7 +257,7 @@ nvidia@nvidia-tegra: ~$ source ~/.bashrc
 3. On the remote-computer run `roscore`
 4. On the Jetson run `roslaunch turtlebot3_bringup turtlebot3_rsld_robot.launch`
 5. On the Jetson run `roslaunch turtlebot3_slam turtlebot3_rsld_slam.launch`
-6. Assuming two robots are named **louie** and **dewey**, on the remote-computer run `roslaunch turtlebot3_slam multi_rsld_rviz.launch louie:=1 dewey:=1'
+6. Assuming two robots are named **louie** and **dewey**, on the remote-computer run `roslaunch turtlebot3_slam multi_rsld_rviz.launch louie:=1 dewey:=1`
 
 ## <a name="packages"></a> ROS Packages Utilized
 * [depthimage_to_laserscan](http://wiki.ros.org/depthimage_to_laserscan)
