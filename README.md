@@ -151,7 +151,7 @@ nvidia@nvidia-tegra: ~/buildJetsonTx2Kernel-master$ sudo ./makeKernel.sh
 nvidia@nvidia-tegra: ~/buildJetsonTx2Kernel-master$ sudo ./copyImage.sh
 ```
 
-4. Restart the Jetson via `sudo reboot -h now`. Once it comes back online, verify that the kernel changes were successful by running the command `ls /dev`. Look for **"ttyACM0"** and **"ttyUSB0"** to ensure teh ACM and CP210 ports are enabled.
+4. Restart the Jetson via `sudo reboot -h now`. Once it comes back online, verify that the kernel changes were successful by running the command `ls /dev`. Look for **"ttyACM0"** and **"ttyUSB0"** to ensure the ACM and CP210 ports are enabled.
 
 5. If using a USB Wifi adapter, plug in the adapter and try to connect to Wifi. If the network connections window shows "Ralink 802.11 n WLAN, Device not ready", run the following commands:
 ```console
